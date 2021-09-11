@@ -1,14 +1,14 @@
 package com.evaneos.evaneostest.repositories
 
+import com.evaneos.data.FakeDestinationFetchingService
 import com.evaneos.data.model.Destination
 import com.evaneos.data.model.DestinationDetails
 import com.evaneos.evaneostest.api.DestinationApi
 
-class DestinationRepository {
+class DestinationRepository(private val destinationApi: DestinationApi) {
 
     @Volatile
     private  var instance: DestinationRepository? = null
-    private  val destinationApi: DestinationApi = DestinationApi().getInstance()
 
 
     fun getInstance(): DestinationRepository {
@@ -18,7 +18,7 @@ class DestinationRepository {
         }
         synchronized(DestinationApi::class.java) {
             if (instance == null) {
-                instance  = DestinationRepository()
+                instance  = DestinationRepository(DestinationApi(FakeDestinationFetchingService()).getInstance())
             }
             return instance as DestinationRepository
         }

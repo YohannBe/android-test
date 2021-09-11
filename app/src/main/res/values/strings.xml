@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">EvaneosTest</string>
+    <string name="title_destination">Destinations</string>
+    <string name="over_error">It seems that there is a problem...\n
+ Please wait for a moment, we are working on it !</string>
+    <string name="error_calm">It seems that an error occurred\n keep calm and try again</string>
+    <string name="try_again">Try again</string>
+    <string name="uh_oh">Uh-oh.</string>
+    <string name="error_sorry">Sorry there might be an error from our side.</string>
+    <string name="empty_list">Your list is empty, start a new one</string>
 </resources>
