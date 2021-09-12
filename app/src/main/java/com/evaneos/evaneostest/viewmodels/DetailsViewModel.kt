@@ -15,11 +15,7 @@ import java.lang.Exception
 
 class DetailsViewModel : ViewModel() {
 
-    private val destinationRepository: DestinationRepository = DestinationRepository(
-        DestinationApi(
-            FakeDestinationFetchingService()
-        ).getInstance()
-    ).getInstance()
+    private val destinationRepository: DestinationRepository = DestinationRepository().getInstance()
 
     private val destinationDetails = MutableLiveData<DestinationDetails>()
     private val errorLoading = MutableLiveData<Boolean>()
@@ -40,9 +36,7 @@ class DetailsViewModel : ViewModel() {
                     errorLoading.value = true
                 }
             }
-
         }
-
     }
 
     fun getResultDestinationDetails(): LiveData<DestinationDetails> {

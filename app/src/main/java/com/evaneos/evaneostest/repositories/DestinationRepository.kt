@@ -5,10 +5,11 @@ import com.evaneos.data.model.Destination
 import com.evaneos.data.model.DestinationDetails
 import com.evaneos.evaneostest.api.DestinationApi
 
-class DestinationRepository(private val destinationApi: DestinationApi) {
+class DestinationRepository {
 
     @Volatile
-    private  var instance: DestinationRepository? = null
+    private var instance: DestinationRepository? = null
+    private val destinationApi = DestinationApi(FakeDestinationFetchingService()).getInstance()
 
 
     fun getInstance(): DestinationRepository {
@@ -18,7 +19,7 @@ class DestinationRepository(private val destinationApi: DestinationApi) {
         }
         synchronized(DestinationApi::class.java) {
             if (instance == null) {
-                instance  = DestinationRepository(DestinationApi(FakeDestinationFetchingService()).getInstance())
+                instance = DestinationRepository()
             }
             return instance as DestinationRepository
         }

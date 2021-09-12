@@ -8,4 +8,6 @@
     <string name="uh_oh">Uh-oh.</string>
     <string name="error_sorry">Sorry there might be an error from our side.</string>
     <string name="empty_list">Your list is empty, start a new one</string>
+    <string name="i_already_knew_thanks">I already knew, thanks</string>
+    <string name="interesting_another">Interesting ! Another !</string>
 </resources>

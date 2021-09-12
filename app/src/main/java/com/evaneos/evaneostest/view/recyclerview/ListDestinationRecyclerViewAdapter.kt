@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.evaneos.data.model.Destination
 import com.evaneos.evaneostest.R
 import com.evaneos.evaneostest.utils.ID_DESTINATION
+import com.evaneos.evaneostest.utils.NAME_DESTINATION
 import com.evaneos.evaneostest.view.activities.DetailsActivity
 
 class ListDestinationRecyclerViewAdapter(context: Context) : RecyclerView.Adapter<ListDestinationRecyclerViewAdapter.ViewHolder>() {
@@ -54,6 +55,7 @@ class ListDestinationRecyclerViewAdapter(context: Context) : RecyclerView.Adapte
         holder.layoutContainer.setOnClickListener {
             val toDetailActivity = Intent(context, DetailsActivity::class.java)
             toDetailActivity.putExtra(ID_DESTINATION, data[position].id)
+            toDetailActivity.putExtra(NAME_DESTINATION, data[position].name)
             context.startActivity(toDetailActivity)
         }
     }

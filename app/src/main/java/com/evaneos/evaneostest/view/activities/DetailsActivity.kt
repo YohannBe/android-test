@@ -7,6 +7,7 @@ import android.webkit.WebViewClient
 import com.evaneos.evaneostest.databinding.ActivityDetailsBinding
 import com.evaneos.evaneostest.utils.DETAILS_ACTIVITY
 import com.evaneos.evaneostest.utils.ID_DESTINATION
+import com.evaneos.evaneostest.utils.NAME_DESTINATION
 import com.evaneos.evaneostest.utils.initDialogError
 import com.evaneos.evaneostest.viewmodels.DetailsViewModel
 
@@ -22,8 +23,12 @@ class DetailsActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-
+        initElements()
         initViewModel(intent.getLongExtra(ID_DESTINATION, -1))
+    }
+
+    private fun initElements() {
+        binding.includeToolbar.toolbarId.title = intent.getStringExtra(NAME_DESTINATION)
     }
 
     private fun initViewModel(id: Long) {
@@ -32,17 +37,24 @@ class DetailsActivity : AppCompatActivity() {
             detailsViewModel.getDestinationDetails(id)
 
             detailsViewModel.getResultDestinationDetails().observe(this, {
-                binding.includeToolbar.toolbarId.title = it.name
                 binding.webviewDetailsActivity.webViewClient = WebViewClient()
                 binding.webviewDetailsActivity.apply {
                     loadUrl(it.url)
                 }
+                binding.progressbarLoadingContentDetailsActivity.visibility = View.GONE
             })
 
             detailsViewModel.getError().observe(this, {
                 if (it) {
                     countTrial++
-                    initDialogError(this, countTrial, detailsViewModel, binding, DETAILS_ACTIVITY, id)
+                    initDialogError(
+                        this,
+                        countTrial,
+                        detailsViewModel,
+                        binding,
+                        DETAILS_ACTIVITY,
+                        id
+                    )
                     binding.progressbarLoadingContentDetailsActivity.visibility = View.GONE
                     binding.textviewErrorDetailsActivity.visibility = View.VISIBLE
                 }

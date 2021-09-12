@@ -4,27 +4,26 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.evaneos.data.FakeDestinationFetchingService
 import com.evaneos.data.model.Destination
-import com.evaneos.evaneostest.api.DestinationApi
+import com.evaneos.evaneostest.model.DidYouKnow
 import com.evaneos.evaneostest.repositories.DestinationRepository
-import com.evaneos.evaneostest.utils.NameAZComparator
+import com.evaneos.evaneostest.repositories.DidYouKnowRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import java.lang.Exception
+import kotlin.random.Random
 
 class DestinationsViewModel : ViewModel() {
 
-    private val destinationRepository: DestinationRepository = DestinationRepository(
-        DestinationApi(
-        FakeDestinationFetchingService()
-    ).getInstance()).getInstance()
+    private val destinationRepository: DestinationRepository = DestinationRepository().getInstance()
+    private val didYouKnowRepository: DidYouKnowRepository = DidYouKnowRepository().getInstance()
 
     private val destinationList = MutableLiveData<List<Destination>>()
     private val errorLoading = MutableLiveData<Boolean>()
     private val emptyListError = MutableLiveData<Boolean>()
-    var job: Job? = null
+    private val listFact = MutableLiveData<List<DidYouKnow>>()
+    private var job: Job? = null
 
 
     fun getDestinationList() {
@@ -33,8 +32,8 @@ class DestinationsViewModel : ViewModel() {
                 val response = destinationRepository.getDestinationList()
                 withContext(Main) {
                     if (response.isNotEmpty()) {
-                        response.sortedWith(NameAZComparator())
-                        destinationList.postValue(response)
+                        val sortedList = response.sortedBy { it.name }
+                        destinationList.postValue(sortedList)
                         errorLoading.value = false
                         emptyListError.value = false
                     } else {
@@ -51,6 +50,20 @@ class DestinationsViewModel : ViewModel() {
         }
     }
 
+    fun getListFact(){
+        job = CoroutineScope(IO).launch {
+            val response = didYouKnowRepository.getListDidYouKnow()
+            withContext(Main){
+                listFact.postValue(response)
+            }
+        }
+    }
+
+    fun getUniqueFact(list: List<DidYouKnow>): DidYouKnow {
+        val index = Random.nextInt(0, list.size-1)
+        return list[index]
+    }
+
     fun getResultDestinationList(): LiveData<List<Destination>> {
         return destinationList
     }
@@ -61,6 +74,10 @@ class DestinationsViewModel : ViewModel() {
 
     fun getListEmpty(): LiveData<Boolean> {
         return emptyListError
+    }
+
+    fun getListFactData(): LiveData<List<DidYouKnow>> {
+        return listFact
     }
 
     override fun onCleared() {

@@ -30,24 +30,26 @@ fun initDialogError(
     val alertDialog = dialogBuilder.create()
 
     if (countTrial >= 3) {
-        bindingDialogError.textviewDescriptionErrorDialog.text = context.getString(R.string.over_error)
+        bindingDialogError.textviewDescriptionErrorDialog.text =
+            context.getString(R.string.over_error)
         bindingDialogError.buttonTryAgainDialogErrorOccurred.isEnabled = false
     }
     alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     alertDialog.show()
 
     bindingDialogError.buttonTryAgainDialogErrorOccurred.setOnClickListener {
-        if (currentActivity == MAIN_ACTIVITY)
-            updateMainActivity(
+        when (currentActivity) {
+            MAIN_ACTIVITY -> updateMainActivity(
                 viewModel as DestinationsViewModel,
                 binding as ActivityMainBinding
             )
-        else if (currentActivity == DETAILS_ACTIVITY)
-            updateDetailsActivity(
+
+            DETAILS_ACTIVITY -> updateDetailsActivity(
                 viewModel as DetailsViewModel,
                 binding as ActivityDetailsBinding,
                 id!!
             )
+        }
         alertDialog.dismiss()
     }
 }
@@ -69,10 +71,5 @@ fun updateMainActivity(
     destinationsViewModel.getDestinationList()
     binding.progressbarLoadingContentListDestination.visibility = View.VISIBLE
     binding.textviewErrorListDestination.visibility = View.GONE
-}
-
-class NameAZComparator : Comparator<Destination?> {
-    override fun compare(p0: Destination?, p1: Destination?): Int {
-        return p0!!.name.compareTo(p1!!.name)
-    }
+    binding.includeDidYouKnow.didYouKnowLayout.visibility = View.VISIBLE
 }

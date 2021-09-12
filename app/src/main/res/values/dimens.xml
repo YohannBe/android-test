@@ -12,5 +12,6 @@
     <dimen name="margin_dialog_error">30dp</dimen>
     <dimen name="margin_small_dialog_error">10dp</dimen>
     <dimen name="padding_dialog_error">20dp</dimen>
+    <dimen name="padding_dialog">10dp</dimen>
 
 </resources>
