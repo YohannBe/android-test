@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EvaneosTest</string>
+    <string name="title_destination">Destinations</string>
+    <string name="over_error">Il semble qu\'il y ai un problème… \n Patientez un moment, nous nous en occupons !</string>
+    <string name="error_calm">Il semble qu\'une erreur soit apparu \n Essayez à nouveau</string>
+    <string name="try_again">Essayer</string>
+    <string name="uh_oh">Oh-oh</string>
+    <string name="error_sorry">Désolé, il se pourrait que nous ayons un problème technique</string>
+    <string name="empty_list">Votre liste est vide, commencez une nouvelle</string>
+    <string name="i_already_knew_thanks">Je le savais déjà, merci</string>
+    <string name="interesting_another">Intéressant ! Un autre !</string>
+</resources>

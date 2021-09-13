@@ -1,48 +1,27 @@
-# android-test
+Choix techniques :
+Architecture MVVM : mis à part le fait qu'il s'agisse d'une contrainte, l'avantage de cette architecture me permet de récupérer des données distantes, de distribuer ces données à un intermédiaire
+puis de les faire passer aux différents view model correspondant aux différentes vues. Cela permet de dissocier totalement la vue (qui a besoin des données) de la méthode (qui permet de les récupérer).
+En plus de cela, si la vue (l'ui) venait à être obsolète, il n'y aura qu'a "plug in" nos données inchangées à la nouvelle ui.
 
-### Introduction
+Binding : viewBinding true, j'ai activé le viewBinding car cela réduisait la quantité de ligne nécessaire à l'initialisation des éléments. A la place d'avoir pour chaque element une variable dont le
+type est spécifié suivi d'un fidViewById (et si j'avais eu besoin que ces variables soient globale j'aurais du mettre un autre bloc de private lateInit var), je n'ai eu qu'a initialiser mon binding,
+(3 lignes).
 
-Dans ce test, tu vas devoir **construire une UI qui affiche des données** provenant d'une (fake) API.
+Singleton pattern : étant donné que nous récupérons les données en background, que cela peut prendre du temps et que l'utilisateur peut changer d'activité avant la récupération des résultats,
+il est (de mon avis) judicieux de s'assurer que l'on ne créer pas une multitude d'instances de la class qui s'occupe de récupérer les données ainsi que les repository. Le but étant d'éviter
+le gaspillage de ressources.
 
-Nous avons déjà créé le service `FakeDestinationFetchingService` qui va retourner les données. Attention, cette API est un peu lente et ne marche pas toujours très bien ;)
+Injection de dépendances : DestinationApi(private val fakeDestinationFetchingService: FakeDestinationFetchingService), la class DestinationApi, qui permet de recuperer les données distantes,
+reçoit plutôt que créer l'objet FakeDestinationFetchingService, de cette manière on obtient plus de modularité et la class est plus facile à tester. Première utilisation.
 
-**L'écran d'accueil correspond à la vue Destinations.**
+Difficultés :
+Les tests unitaires des view models utilisant coroutine ne sont pas encore maitrisés. Coroutine étant un pan d'apprentissage que j'ai appris pour la contrainte du test, la manière de créer les 
+tests n'ai pas encore au point (cela ne saurait tardé mais tout de même). Cependant, l'utilisation de coroutine en lui même, de sa logique, de ses dispatcher et autres s'est réalisée sans difficultés.
 
-Pour réaliser ce test, tu peux **forker ce repo** et faire l'implémentation de ton coté, tu nous enverras ensuite l'URL de ton repo.
+Dans l'ensemble le test m'a paru assez simple (les résultats me diront si j'ai eu raison de le penser).
 
-Chez Evaneos, nous accordons beaucoup d'importance à la **qualité du code et à la qualité de l'expérience utilisateur** de nos produits. Dans ce test, notre but n'est pas tant de savoir si tu parviendras à construire ces écrans mais plutôt **la manière dont tu le feras**. N'hésite pas à faire attention aux détails, à être **rigoureux et prévoyant** sur l'expérience utilisateur (lenteur API, qualité UI) et sur **la propreté, la structure et la clarté du code**. N'hésite pas à nous solliciter si tu as des questions.
-
-Nous souhaitons aussi que tu nous montres ta capacité à **implémenter des tests unitaires** (tu n'es pas obligé de tout couvrir, mais essaie de porter une attention particulière à ceux que tu écriras).
-
-Bonus : utiliser de l'injection de dépendances.
-
-### Contraintes
-
-- Utiliser une architecture **MVVM**
-- Utiliser des **coroutines**
-
-### Maquettes
-
-iOS : [https://www.figma.com/file/4yIJXkSfo9xACHgG2KN0Yu/App-TestAlternantsMobileDestinationGuide?node-id=1%3A39](https://www.figma.com/file/4yIJXkSfo9xACHgG2KN0Yu/App-TestAlternantsMobileDestinationGuide?node-id=1%3A39)
-
-Android : [https://www.figma.com/file/4yIJXkSfo9xACHgG2KN0Yu/App-TestAlternantsMobileDestinationGuide?node-id=3%3A77](https://www.figma.com/file/4yIJXkSfo9xACHgG2KN0Yu/App-TestAlternantsMobileDestinationGuide?node-id=3%3A77)
-
-### Vue Destinations
-
-Cet écran acceuille les destinations que le service retourne. 
-
-Les destinations doivent être listées par ordre alphabétique.
-
-Lorsque l'utilisateur sélectionne une destination, l'app affiche la vue Détails qui correspond à cette destination.
-
-### Vue Détails
-
-Cet écran n'affiche qu'une webview qui a pour URL celle fournie dans l'objet `DestinationDetails`
-
-### Règles
-
-- Limite autant que possible les dépendances externes et justifie leur utilisation.
-- Ne modifie pas le code du module `data`. Contacte-nous si tu penses qu'il y a un problème !
-- Essaie de faire des commits régulièrement, nous aimerions avoir un aperçu de l'évolution de ton test.
-
-Lorsque tu auras terminé, nous te demandons d'expliquer tes choix techniques, les difficultés rencontrées, les patterns et dépendances que tu as utilisés pour la première fois et ce que tu aurais ajouté ou modifié si tu avais eu plus de temps à allouer au test, dans un fichier readme.
+Plus de temps :
+Si le temps alloué était plus important, j'aurais d'abord approfondi le sujet de coroutine, savoir si je devrais lancer CoroutineScope.launch à partir de DestinationApi et retourner un LiveData
+ou bien comme je l'ai implémenté c'est correct (ou au moins, pas négatif).
+J'aurais appris avec mon mentor les tests à effectuer pour un view model ou coroutine est présent 
+J'aurai rajouté des animations.
