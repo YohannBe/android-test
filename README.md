@@ -16,7 +16,7 @@ reçoit plutôt que créer l'objet FakeDestinationFetchingService, de cette mani
 
 Difficultés :
 Les tests unitaires des view models utilisant coroutine ne sont pas encore maitrisés. Coroutine étant un pan d'apprentissage que j'ai appris pour la contrainte du test, la manière de créer les 
-tests n'ai pas encore au point (cela ne saurait tardé mais tout de même). Cependant, l'utilisation de coroutine en lui même, de sa logique, de ses dispatcher et autres s'est réalisée sans difficultés.
+tests n'ai pas encore au point (cela ne saurait tardé mais tout de même). Cependant, l'utilisation de coroutine en lui même, de sa logique, de ses dispatcher et autres, s'est réalisée sans difficultés.
 
 Dans l'ensemble le test m'a paru assez simple (les résultats me diront si j'ai eu raison de le penser).
 
